@@ -1,0 +1,74 @@
+variables: !include xbb-variables.yaml
+global_cuts: !include splits/simple-split.yaml
+
+hbb: &hbb
+  name: hbb
+  pattern: user.vvecchio.801471.e8441_s3681_r13144_p6453.tdd.FatJets.25_2_47.25-04-11_vv_xbb_output.h5/*.h5
+hcc: &hcc
+  name: hcc
+  pattern: user.vvecchio.801472.e8441_s3681_r13144_p6453.tdd.FatJets.25_2_47.25-04-11_vv_xbb_output.h5/*.h5
+top: &top
+  name: top
+  equal_jets: true
+  pattern: user.vvecchio.426345.e6880_s3681_r13144_p6453.tdd.FatJets.25_2_47.25-04-11_vv_xbb_output.h5/*.h5
+    #- user.svanstro.426345.e6880_s3681_r13144_p5488.tdd.*/*.h5
+    #- user.svanstro.426345.e6880_s3681_r13145_p5488.tdd.*/*.h5
+#qcd: &qcd
+#  name: qcd
+#  equal_jets: true
+#  pattern:
+#    - user.svanstro.364703.e7142_s3681_r13144_p5488.tdd.*/*.h5
+#    - user.svanstro.364704.e7142_s3681_r13144_p5488.tdd.*/*.h5
+#    - user.svanstro.364705.e7142_s3681_r13144_p5488.tdd.*/*.h5
+
+inclusive: &inclusive
+  name: inclusive
+  cuts: []
+
+components:
+  - region:
+      <<: *inclusive
+    sample:
+      <<: *hbb
+    flavours: [hbb]
+    num_jets: 5_000_000
+
+  - region:
+      <<: *inclusive
+    sample:
+      <<: *hcc
+    flavours: [hcc]
+    num_jets: 5_000_000
+
+  - region:
+      <<: *inclusive
+    sample:
+      <<: *top
+    flavours: [top]
+    num_jets: 5_000_000
+#
+#  - region:
+#      <<: *inclusive
+#    sample:
+#      <<: *qcd
+#    flavours: [qcd]
+#    num_jets: 50_000_000
+
+resampling:
+  target: hbb
+  method: countup
+  sampling_fraction: 1
+  variables:
+    pt:
+      bins: [[250_000, 1_300_000, 50]]
+    abs_eta:
+      bins: [[0, 2, 20]]
+    mass:
+      bins: [[50_000, 300_000, 50]]
+
+# note: sensible defaults are defined in the PreprocessingConfig constructor
+global:
+  batch_size: 100_000
+  num_jets_estimate: 1_000_000
+  base_dir: /eos/user/v/vvecchio/xbb_check/
+  merge_test_samples: True
