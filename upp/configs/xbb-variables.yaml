@@ -5,10 +5,10 @@ jets:
     - abs_eta
     - mass
     - n_tracks
-    - GN2Xv02_phbb
-    - GN2Xv02_phcc
-    - GN2Xv02_ptop
-    - GN2Xv02_pqcd
+    #- GN2Xv02_phbb
+    #- GN2Xv02_phcc
+    #- GN2Xv02_ptop
+    #- GN2Xv02_pqcd
     - GhostBHadronsFinalCount
     - GhostCHadronsFinalCount
     - C2
